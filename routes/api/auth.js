@@ -4,7 +4,7 @@ const ctrl = require('../../controllers/auth');
 
 const { ctrlWrapp } = require('../../helpers');
 
-const { validBody, authenticate } = require('../../middlewares');
+const { validBody, authenticate, upload } = require('../../middlewares');
 
 const { schemas } = require('../../models/user');
 
@@ -17,5 +17,12 @@ router.post('/signin', validBody(schemas.signinSchema), ctrlWrapp(ctrl.signin));
 router.get('/current', authenticate, ctrlWrapp(ctrl.current));
 
 router.get('/logout', authenticate, ctrlWrapp(ctrl.logout));
+
+router.patch(
+  '/avatars',
+  authenticate,
+  upload.single('avatar'),
+  ctrlWrapp(ctrl.avatar)
+);
 
 module.exports = router;
